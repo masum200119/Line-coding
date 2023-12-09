@@ -1,0 +1,129 @@
+#include<bits/stdc++.h>
+using namespace std;
+void depression()
+{
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+    // freopen("output - Copy.txt","w",stdout);
+    #endif
+}
+string Exor(string divisor,string dividend,int x)
+{
+    int n;
+    n=divisor.size();
+    if(x==0)
+    {
+        for(int i=0;i<n-1;i++)
+        {
+            dividend+='0';
+        }
+    }
+    
+
+    queue<char>q;
+    for(int i=0;i<n;i++)
+    {
+        int x=((divisor[i]-'0')^(dividend[i]-'0'));
+        if(x==0)
+        {
+            q.push('0');
+        }
+        else
+        {
+            q.push('1');
+        }
+        
+        
+    }
+    int i=0,j=n;
+    while(j<dividend.size())
+    {
+        
+        while(q.front()=='0')
+        {
+            q.pop();
+        }
+
+        if(q.size()!=n)
+        {
+            while(q.size()!=n and j<dividend.size())
+            {
+                q.push(dividend[j]);
+                j++;
+            }
+        }
+        if(j==dividend.size() and q.size()<n)
+        {
+            break;
+        }
+        
+        string dd="";
+        while(!q.empty())
+        {
+            // cout<<q.front();
+            dd+=q.front();
+            q.pop();
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            int x=((divisor[i]-'0')^(dd[i]-'0'));
+            if(x==0)
+            {
+                q.push('0');
+            }
+            else
+            {
+                q.push('1');
+            }
+        
+        }
+    }
+    string s="";
+    
+    while(!q.empty())
+    {
+        s+=q.front();
+        q.pop();
+    }
+    if(s.size()<n)
+    {
+        while(s.size()!=n)
+        {
+            s='0'+s;
+        }
+    }
+    return s;
+}
+void chaos()
+{
+    string divisor,dividend;
+    cin>>divisor>>dividend;
+    string rem=Exor(divisor,dividend,0);
+    cout<<rem<<endl;
+    for(int i=1;i<rem.size();i++)
+    {
+        dividend+=rem[i];
+    }
+    cout<<dividend<<endl;
+    string Receiver;
+    cin>>Receiver;
+    string new_rem=Exor(divisor,Receiver,1);
+
+    if(count(new_rem.begin(),new_rem.end(),'1')==0)
+    {
+        cout<<"Accepted"<<endl;
+    }
+    else
+    {
+        cout<<"Rejected"<<endl;
+    }
+
+    
+}
+int main()
+{
+    depression();
+    chaos();
+}
